@@ -1,20 +1,10 @@
-# Hello World
+# interactive document
 
-Blah blah
+The following is a counter:
 
 <div id="test1">
 </div>
 
-## this is cool
+Notice how the counter increments every second?
 
-<div id="test2">
-</div>
-
-[google.com](https://google.com)
-
-1. lol
-2. *lol*
-3. **lol**
-
-
-<div id="test3"/>
+That's what a counter does.

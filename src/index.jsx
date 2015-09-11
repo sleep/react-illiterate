@@ -1,9 +1,8 @@
 import React, {PropTypes, unmountComponentAtNode} from "react";
 
-export default {
+export default React.createClass({
     propTypes: {
-        src: PropTypes.string.isRequired,
-        classes: PropTypes.object, //Object with React Component keys?
+        classes: PropTypes.object.isRequired
     },
     componentWillMount() {
         this.mountedNodes = [];
@@ -23,7 +22,12 @@ export default {
         for (let i = 0; i < this.mountedNodes.length; i++) {
             unmountComponentAtNode(this.mountedNodes[i]);
         }
+    },
+    render() {
+        return (
+            <div>
+                {this.props.children}
+            </div>
+        );
     }
-};
-
-//TODO move to async
+});

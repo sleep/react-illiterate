@@ -1,5 +1,5 @@
 import React, {PropTypes} from "react";
-import IlliterateSimple from "../src/IlliterateSimple.jsx";
+import Illiterate from "../src/index.jsx";
 
 import text from "./text.md";
 
@@ -25,26 +25,9 @@ const classes = {
                 </div>
             );
         }
-    }),
-    test2: React.createClass({
-        render() {
-            return (
-                <div>
-                    test2
-                </div>
-            );
-        }
-    }),
-    test3: React.createClass({
-        render() {
-            return (
-                <div>
-                    test3
-                </div>
-            );
-        }
     })
 };
+
 
 const Root = React.createClass({
     getInitialState() {
@@ -57,13 +40,13 @@ const Root = React.createClass({
     },
     render() {
         let thing = (
-            <IlliterateSimple src={text}
-                              classes={classes} />
+            <Illiterate classes={classes}>
+                <div dangerouslySetInnerHTML={{__html: text}}/>
+            </Illiterate>
         );
 
         return (
             <div>
-                <h1>root</h1>
                 <button onClick={this.onClick}>toggle</button>
                 {this.state.show ? thing: null}
             </div>
@@ -71,6 +54,4 @@ const Root = React.createClass({
     }
 });
 
-React.render((
-    <Root/>
-), document.body);
+React.render(<Root/>, document.body);
