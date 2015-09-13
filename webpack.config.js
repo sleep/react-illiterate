@@ -14,7 +14,7 @@ module.exports = {
     },
     output: {
         filename: "./[name]/bundle.js",
-        library: "reach",
+        library: "react-illiterate",
         libraryTarget: "umd"
     },
     module: {
