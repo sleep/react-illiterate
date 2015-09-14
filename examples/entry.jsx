@@ -40,14 +40,14 @@ const Root = React.createClass({
     },
     render() {
         let thing = (
-            <Illiterate classes={classes}>
-                <div dangerouslySetInnerHTML={{__html: text}}/>
-            </Illiterate>
+            <Illiterate src={text}
+                        classes={classes}/>
         );
 
         return (
             <div>
                 <button onClick={this.onClick}>toggle</button>
+                <div id="test1"> This does not get overridden!</div>
                 {this.state.show ? thing: null}
             </div>
         );
