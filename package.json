@@ -2,7 +2,7 @@
   "name": "react-illiterate",
   "version": "0.0.0",
   "description": "Semi-literate programming with React components",
-  "main": "build/bundle.js",
+  "main": "src/index.jsx",
   "dependencies": {
     "react": "^0.13.3"
   },
