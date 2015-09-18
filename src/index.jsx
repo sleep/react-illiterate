@@ -1,12 +1,15 @@
 import React, {PropTypes, unmountComponentAtNode} from "react";
 
+
+//TODO: split src, apply diffs.
+
 export default React.createClass({
   propTypes: {
     src: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired
   },
   componentWillMount() {
-    this.elements = {}; //Memoize the elements in an map.
+    this.elements = {}; //Memoize the elements in a map.
   },
 
   // This should be a idempotent, as React.render(element, node) is idempotent
@@ -16,25 +19,38 @@ export default React.createClass({
     let classes = this.props.classes;
 
 
+    console.log(shadowRoot.innerHTML);
     //set innerHTML
     shadowRoot.innerHTML = this.props.src;
 
     let keys = Object.keys(classes)
-          .filter((key) => shadowRoot.getElementById(key));
+                     .filter((key) => shadowRoot.getElementById(key));
 
     //invariant: shadowRoot.getElementById(key) exists for all keys
 
     //make elements
+
     this.elements = keys.reduce((sum, key) => {
+      let elem = this.elements[key];
+      if (elem) {
+        return Object.assign(sum, {[key]: elem});
+      }
       return Object.assign(sum, {
-        [key]: this.elements[key] || React.createElement(classes[key])
+        [key]: {
+          DOMNode: document.createElement("div"),
+          element: React.createElement(classes[key])
+        }
       });
     }, {});
 
     //render elements;
     keys.forEach((key) => {
-      React.render(this.elements[key], shadowRoot.getElementById(key));
+      let {element, DOMNode} = this.elements[key];
+      React.render(element, DOMNode);
+      shadowRoot.getElementById(key).appendChild(DOMNode);
     });
+
+
   },
 
 
@@ -52,8 +68,8 @@ export default React.createClass({
   componentDidUpdate(prevProps) {
     //unmount existing nodes
     let toUnmount = Object.keys(prevProps.classes)
-          .map((key) => this.shadowRoot.getElementById(key))
-          .filter((node) => node);
+                          .map((key) => this.shadowRoot.getElementById(key))
+                          .filter((node) => node);
     this.__unmountNodes(toUnmount);
 
     //(re-)mount
@@ -62,8 +78,8 @@ export default React.createClass({
 
   componentWillUnmount() {
     let nodes = Object.keys(this.props.classes)
-          .map((key) => this.shadowRoot.getElementById(key))
-          .filter((node) => node);
+                      .map((key) => this.shadowRoot.getElementById(key))
+                      .filter((node) => node);
 
     this.__unmountNodes(nodes);
   },
@@ -72,12 +88,7 @@ export default React.createClass({
   },
   render() {
     return (
-        <div/>
+      <div/>
     );
   }
 });
-
-
-//TODO:
-// - handle updating
-// - Think about how to handle styling
