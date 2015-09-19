@@ -19,7 +19,6 @@ export default React.createClass({
     let classes = this.props.classes;
 
 
-    console.log(shadowRoot.innerHTML);
     //set innerHTML
     shadowRoot.innerHTML = this.props.src;
 
