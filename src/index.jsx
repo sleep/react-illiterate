@@ -2,15 +2,15 @@ import React, {PropTypes, unmountComponentAtNode} from "react";
 
 
 //TODO: split src, apply diffs.
-
 export default React.createClass({
   propTypes: {
     src: PropTypes.string.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object
   },
   componentWillMount() {
     this.elements = {}; //Memoize the elements in a map.
   },
+
 
   // This should be a idempotent, as React.render(element, node) is idempotent
   __mountNodes() {
@@ -26,7 +26,6 @@ export default React.createClass({
                      .filter((key) => shadowRoot.getElementById(key));
 
     //invariant: shadowRoot.getElementById(key) exists for all keys
-
     //make elements
 
     this.elements = keys.reduce((sum, key) => {
@@ -54,6 +53,7 @@ export default React.createClass({
 
 
   __unmountNodes(nodes) {
+    console.log("unmounting", nodes);
     nodes.forEach((node) => {unmountComponentAtNode(node);});
   },
 
