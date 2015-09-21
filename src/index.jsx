@@ -19,9 +19,9 @@ export default React.createClass({
     let classes = this.props.classes;
 
 
-
     //set innerHTML
     shadowRoot.innerHTML = this.props.src;
+
 
     // do not mount stuff if there is nothing to mount
     if (!classes) return;
@@ -69,12 +69,6 @@ export default React.createClass({
 
   componentDidUpdate(prevProps) {
     let {elements} = this;
-    if (prevProps.classes){
-        //unmount existing nodes
-        let nodes = Object.keys(elements)
-                        .map((key) => elements[key].DOMNode);
-        this.__unmountNodes(nodes);
-    }
 
     //(re-)mount
     this.__mountNodes();
