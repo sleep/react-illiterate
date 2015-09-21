@@ -19,8 +19,12 @@ export default React.createClass({
     let classes = this.props.classes;
 
 
+
     //set innerHTML
     shadowRoot.innerHTML = this.props.src;
+
+    // do not mount stuff if there is nothing to mount
+    if (!classes) return;
 
     let keys = Object.keys(classes)
                      .filter((key) => shadowRoot.getElementById(key));
@@ -65,22 +69,27 @@ export default React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    //unmount existing nodes
-    let toUnmount = Object.keys(prevProps.classes)
-                          .map((key) => this.shadowRoot.getElementById(key))
-                          .filter((node) => node);
-    this.__unmountNodes(toUnmount);
+    if (prevProps.classes){
+        //unmount existing nodes
+        let toUnmount = Object.keys(prevProps.classes)
+                            .map((key) => this.shadowRoot.getElementById(key))
+                            .filter((node) => node);
+        this.__unmountNodes(toUnmount);
+    }
 
     //(re-)mount
     this.__mountNodes();
   },
 
   componentWillUnmount() {
-    let nodes = Object.keys(this.props.classes)
-                      .map((key) => this.shadowRoot.getElementById(key))
-                      .filter((node) => node);
+    if (this.props.classes) {
+        let nodes = Object.keys(this.props.classes)
+                        .map((key) => this.shadowRoot.getElementById(key))
+                        .filter((node) => node);
 
-    this.__unmountNodes(nodes);
+        this.__unmountNodes(nodes);
+    }
+    //remove child DOM Nodes?
   },
   shouldComponentUpdate(nextProps) {
     return true;
