@@ -90,12 +90,6 @@ export default React.createClass({
 
         this.__unmountNodes(nodes);
     }
-    //remove child DOM Nodes?
-    Object.keys(elements).forEach((key) => {
-      let elem = elements[key];
-      console.log(elem);
-      elem.DOMNode.remove();
-    });
   },
   shouldComponentUpdate(nextProps) {
     return true;
