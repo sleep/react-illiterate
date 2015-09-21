@@ -57,8 +57,7 @@ export default React.createClass({
 
 
   __unmountNodes(nodes) {
-    console.log("unmounting", nodes);
-    nodes.forEach((node) => {unmountComponentAtNode(node);});
+    nodes.forEach((node) => {unmountComponentAtNode(node)});
   },
 
   componentDidMount() {
@@ -69,12 +68,12 @@ export default React.createClass({
   },
 
   componentDidUpdate(prevProps) {
+    let {elements} = this;
     if (prevProps.classes){
         //unmount existing nodes
-        let toUnmount = Object.keys(prevProps.classes)
-                            .map((key) => this.shadowRoot.getElementById(key))
-                            .filter((node) => node);
-        this.__unmountNodes(toUnmount);
+        let nodes = Object.keys(elements)
+                        .map((key) => elements[key].DOMNode);
+        this.__unmountNodes(nodes);
     }
 
     //(re-)mount
@@ -82,14 +81,21 @@ export default React.createClass({
   },
 
   componentWillUnmount() {
-    if (this.props.classes) {
-        let nodes = Object.keys(this.props.classes)
-                        .map((key) => this.shadowRoot.getElementById(key))
-                        .filter((node) => node);
+    let {classes} = this.props;
+    let {elements, shadowRoot} = this;
+
+    if (classes) {
+        let nodes = Object.keys(elements)
+                        .map((key) => elements[key].DOMNode);
 
         this.__unmountNodes(nodes);
     }
     //remove child DOM Nodes?
+    Object.keys(elements).forEach((key) => {
+      let elem = elements[key];
+      console.log(elem);
+      elem.DOMNode.remove();
+    });
   },
   shouldComponentUpdate(nextProps) {
     return true;
